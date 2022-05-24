@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ssm"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ssm"
 )
 
 const (
@@ -34,7 +35,11 @@ func main() {
 	sess := CreateSession()
 	client := CreateClient(sess)
 
-	ExportVariables(client, os.Getenv("AWS_ENV_PATH"), *recursivePtr, *format, "")
+	env_paths := strings.Split(os.Getenv("AWS_ENV_PATH"), ":")
+
+	for i := range env_paths {
+		ExportVariables(client, env_paths[i], *recursivePtr, *format, "")
+	}
 }
 
 func CreateSession() *session.Session {
