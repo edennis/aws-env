@@ -43,7 +43,7 @@ func main() {
 }
 
 func CreateSession() *session.Session {
-	return session.Must(session.NewSession())
+	return session.Must(session.NewSessionWithOptions(session.Options{SharedConfigState: session.SharedConfigEnable}))
 }
 
 func CreateClient(sess *session.Session) *ssm.SSM {
